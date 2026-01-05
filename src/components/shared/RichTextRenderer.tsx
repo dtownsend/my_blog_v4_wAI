@@ -39,7 +39,7 @@ export default function RichTextRenderer({ content }: RichTextRendererProps) {
     },
     renderNode: {
       [BLOCKS.PARAGRAPH]: (node, children) => (
-        <p className="mb-4 leading-relaxed text-gray-700">{children}</p>
+        <p className="mb-4 leading-relaxed text-gray-700 text-justify">{children}</p>
       ),
       [BLOCKS.HEADING_1]: (node, children) => (
         <h1 className="text-3xl font-bold mt-8 mb-4 text-gray-900">{children}</h1>

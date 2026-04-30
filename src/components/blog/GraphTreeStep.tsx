@@ -52,9 +52,9 @@ export default function GraphTreeStep({ label, body, isLast }: GraphTreeStepProp
 
   return (
     <>
-      <details className="rounded border border-gray-200 bg-white group">
+      <details className="rounded border border-gray-200 bg-white group/step">
         <summary className="cursor-pointer select-none list-none flex items-center gap-2 px-3 py-2 text-gray-800">
-          <span className="inline-block transition-transform group-open:rotate-90" aria-hidden>
+          <span className="inline-block transition-transform group-open/step:rotate-90" aria-hidden>
             ▶
           </span>
           {label}

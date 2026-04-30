@@ -5,6 +5,8 @@ import { getPostBySlug, getAllPostSlugs } from '@/lib/contentful';
 import RichTextRenderer from '@/components/shared/RichTextRenderer';
 import ShareButtons from '@/components/blog/ShareButtons';
 import NewsletterForm from '@/components/shared/NewsletterForm';
+import TableOfContents from '@/components/blog/TableOfContents';
+import { extractHeadings } from '@/lib/extract-headings';
 import { formatDate } from '@/lib/utils';
 import { SITE_CONFIG } from '@/lib/constants';
 
@@ -70,7 +72,8 @@ export default async function PostPage({ params }: PostPageProps) {
     notFound();
   }
 
-  const { title, body, featuredImage, tags, publishDate } = post.fields;
+  const { title, body, featuredImage, tags, publishDate, showTableOfContents } = post.fields;
+  const headings = showTableOfContents ? extractHeadings(body) : [];
 
   const imageUrl = featuredImage?.fields?.file?.url
     ? featuredImage.fields.file.url.startsWith('//')
@@ -103,6 +106,10 @@ export default async function PostPage({ params }: PostPageProps) {
         )}
         <ShareButtons title={title} slug={slug} />
       </header>
+
+      {showTableOfContents && headings.length > 0 && (
+        <TableOfContents headings={headings} />
+      )}
 
       {/* Featured Image */}
       {imageUrl && (

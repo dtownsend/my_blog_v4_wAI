@@ -65,6 +65,7 @@ export interface PostEntry {
     tags: string[];
     publishDate: string;
     status: 'draft' | 'published';
+    showTableOfContents?: boolean;
   };
 }
 
@@ -131,6 +132,39 @@ export interface AboutEntry {
     introduction?: string;
     story?: Document;
     profilePicture?: ContentfulAsset;
+  };
+}
+
+export interface GraphTreeStepEntry {
+  sys: { id: string; contentType: { sys: { id: 'graphTreeStep' } } };
+  fields: {
+    label: string;
+    body?: string;
+  };
+}
+
+export interface GraphTreeEntry {
+  sys: { id: string; contentType: { sys: { id: 'graphTree' } } };
+  fields: {
+    title?: string;
+    steps: GraphTreeStepEntry[];
+  };
+}
+
+export interface ImageGridItemEntry {
+  sys: { id: string; contentType: { sys: { id: 'imageGridItem' } } };
+  fields: {
+    image: ContentfulAsset;
+    caption?: string;
+    alt?: string;
+  };
+}
+
+export interface ImageGridEntry {
+  sys: { id: string; contentType: { sys: { id: 'imageGrid' } } };
+  fields: {
+    columns: 2 | 3 | 4;
+    items: ImageGridItemEntry[];
   };
 }
 

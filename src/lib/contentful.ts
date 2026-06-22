@@ -81,16 +81,6 @@ export interface ArtworkEntry {
   };
 }
 
-export interface PageEntry {
-  sys: { id: string };
-  fields: {
-    title: string;
-    slug: string;
-    body: Document;
-    metaDescription?: string;
-  };
-}
-
 export interface ResumeItemEntry {
   sys: { id: string };
   fields: {
@@ -242,23 +232,6 @@ export async function getArtworks(preview = false): Promise<ArtworkEntry[]> {
   return response.items as unknown as ArtworkEntry[];
 }
 
-export async function getPageBySlug(
-  slug: string,
-  preview = false
-): Promise<PageEntry | null> {
-  const client = getClient(preview);
-
-  const query: Record<string, unknown> = {
-    content_type: 'page',
-    'fields.slug': slug,
-    limit: 1,
-  };
-
-  const response = await client.getEntries(query);
-
-  return (response.items[0] as unknown as PageEntry) || null;
-}
-
 export async function getResumeItems(
   preview = false
 ): Promise<ResumeItemEntry[]> {
@@ -284,23 +257,6 @@ export async function getSkills(preview = false): Promise<SkillEntry[]> {
   const response = await client.getEntries(query);
 
   return response.items as unknown as SkillEntry[];
-}
-
-export async function getAllTags(): Promise<string[]> {
-  const client = getClient();
-
-  const query: Record<string, unknown> = {
-    content_type: 'post',
-    select: ['fields.tags'],
-    'fields.status': 'published',
-  };
-
-  const response = await client.getEntries(query);
-
-  const allTags = response.items.flatMap(
-    (item) => (item.fields as { tags?: string[] }).tags || []
-  );
-  return Array.from(new Set(allTags));
 }
 
 export async function getProfile(preview = false): Promise<ProfileEntry | null> {

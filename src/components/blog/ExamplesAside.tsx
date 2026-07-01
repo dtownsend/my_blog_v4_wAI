@@ -37,7 +37,7 @@ const cardBodyOptions: Options = {
   },
   renderNode: {
     [BLOCKS.PARAGRAPH]: (node, children) => (
-      <p className="mb-2 last:mb-0 leading-snug text-justify">{children}</p>
+      <p className="mb-2 last:mb-0 leading-snug text-justify hyphens-auto">{children}</p>
     ),
     [BLOCKS.UL_LIST]: (node, children) => (
       <ul className="list-disc pl-4 mb-2 space-y-0.5">{children}</ul>

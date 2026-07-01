@@ -62,31 +62,49 @@ entries ride along via reference. `getPostBySlug` already fetches with
 1. Create one `exampleCard` entry per card (title, body, color).
 2. Create one `examplesAside`, set its title + `side`, reference the cards in
    `examples` (order matters).
-3. Embed the `examplesAside` into the post body **immediately before** the
-   paragraph it should sit beside.
+3. Embed the `examplesAside` into the post body **immediately after** the
+   paragraph it should accompany. `RichTextRenderer` pairs the two (see Layout).
 
-## Layout approach — CSS float
+## Layout approach — paragraph + aside pairing
 
-The embedded `examplesAside` renders as a block-level sibling among the post's
-paragraphs inside `RichTextRenderer`'s `<div className="prose prose-lg …">`.
-To wrap a paragraph around it:
+> **Note:** the original design used a plain float with the box before the
+> paragraph. Once previewed against real long-form example content, that left a
+> dead gap above the desktop float (or, if placed after the paragraph, the wrong
+> order on mobile). The pairing approach below replaced it so both breakpoints
+> are correct. See the "considered and rejected" list.
 
-- The box appears in source order **before** the paragraph it accompanies.
-- Desktop (`md:`): `float-left`/`float-right` + a fixed width + a margin on the
-  text-facing side, so following text wraps.
-  - right → `md:float-right md:ml-6 md:mb-4 md:w-72`
-  - left → `md:float-left md:mr-6 md:mb-4 md:w-72`
-- Mobile: `float-none w-full my-6` — a normal stacked block.
+The embedded `examplesAside` renders among the post's paragraphs inside
+`RichTextRenderer`'s `<div className="prose prose-lg …">`. `RichTextRenderer`
+walks the document's top-level nodes and, when a paragraph is *immediately
+followed* by an `examplesAside`, renders the two inside a pairing wrapper
+(`ExamplesAsidePair`). All other nodes render node-by-node exactly as before.
 
-**Known float behavior (accepted):** if the box is taller than its adjacent
-paragraph, the *next* paragraph continues wrapping alongside it until the text
-clears. This is inherent to floats and is acceptable. Authoring guidance: place
-the box just before its paragraph and keep it roughly paragraph-height.
+The pair uses `display:contents` + flex to get the right behavior on each
+breakpoint from a single source position:
+
+- **Desktop (`md:`):** the wrappers are `md:contents`, so they generate no box
+  and the aside (source-ordered *before* the paragraph inside the pair) floats
+  in the article flow. The paragraph and following paragraphs wrap around it.
+  The aside floats via its own `side` classes (`md:float-right md:ml-6 md:w-72`
+  / `md:float-left md:mr-6 md:w-72`) plus `md:mt-0` so its top is level with the
+  paragraph — no dead space above the box.
+- **Mobile:** the pair wrapper is `flex flex-col` and the aside wrapper is
+  `order-last`, so the aside drops **after** the paragraph. The aside itself is
+  `float-none w-full my-6` — a full-width stacked block.
+
+This is why the embed is authored *after* its paragraph: that source position
+gives the correct mobile order, and the pairing + `display:contents` recovers
+the desktop float beside the paragraph.
+
+**Known float behavior (accepted):** if the box is taller than its paragraph,
+following paragraphs keep wrapping alongside it until the text clears — inherent
+to floats, and the desired space-filling behavior here.
 
 Approaches considered and rejected:
-- **Pair paragraph + box in a flex row** — requires walking/grouping the
-  Contentful rich-text node tree to marry a box to its neighbor. Too complex and
-  fragile.
+- **Simple float, box before the paragraph (no pairing)** — the original plan. A
+  single source position couples the two breakpoints: box-before gives a clean
+  desktop float but puts the box *above* the paragraph on mobile; box-after fixes
+  mobile but leaves a dead gap above the desktop float. Pairing satisfies both.
 - **True margin sidebar in the article layout** — a bigger layout change that
   can't align to a specific paragraph. Doesn't match the mockup.
 
@@ -181,6 +199,14 @@ case 'examplesAside': {
   );
 }
 ```
+
+- Replace the single `documentToReactComponents(content, options)` call with a
+  top-level walk (see Layout approach). Render each node via
+  `documentToReactComponents(asDoc(node), options)`; when a `PARAGRAPH` node is
+  immediately followed by an `examplesAside` embed, wrap the pair in
+  `ExamplesAsidePair` and skip the consumed aside. Helpers `asDoc(node)`,
+  `isExamplesAsideNode(node)`, and the `ExamplesAsidePair` component live in this
+  file.
 
 ## Verification
 

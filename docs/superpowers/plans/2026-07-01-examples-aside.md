@@ -20,6 +20,28 @@
 
 ---
 
+## Amendment (post-execution styling iteration)
+
+After Tasks 1–4 were implemented and reviewed, a visual preview against real
+long-form example content changed the desktop layout approach. The Task 3 code
+below (a plain float via the `EMBEDDED_ENTRY` case) shipped, then was superseded:
+
+- `RichTextRenderer` now **pairs** a paragraph with an `examplesAside` placed
+  immediately after it, rendering top-level nodes one at a time and wrapping the
+  pair in an `ExamplesAsidePair` component. On desktop the pair collapses via
+  `display:contents` so the aside floats before the paragraph (top-aligned, text
+  wraps); on mobile it is a `flex flex-col` with the aside `order-last` (after
+  the paragraph). See the spec's "Layout approach — paragraph + aside pairing".
+- `ExamplesAside` gained `md:mt-0` so the desktop float's top is level with the
+  paragraph.
+- Authoring rule changed from "embed **before** the paragraph" to "embed
+  **after** the paragraph."
+
+The task code blocks below reflect the original plan; the committed code is the
+source of truth for the final pairing behavior.
+
+---
+
 ### Task 1: Add TypeScript entry types
 
 **Files:**

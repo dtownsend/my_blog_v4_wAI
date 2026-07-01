@@ -8,7 +8,8 @@ import { slugify } from '@/lib/utils';
 import { getPlainText } from '@/lib/extract-headings';
 import GraphTree from '@/components/blog/GraphTree';
 import ImageGrid from '@/components/blog/ImageGrid';
-import { GraphTreeEntry, ImageGridEntry } from '@/lib/contentful';
+import ExamplesAside from '@/components/blog/ExamplesAside';
+import { GraphTreeEntry, ImageGridEntry, ExamplesAsideEntry } from '@/lib/contentful';
 import { useEffect } from 'react';
 import Prism from 'prismjs';
 import 'prismjs/themes/prism-tomorrow.css';
@@ -114,6 +115,16 @@ export default function RichTextRenderer({ content }: RichTextRendererProps) {
               <ImageGrid
                 columns={imageGrid.fields.columns}
                 items={imageGrid.fields.items}
+              />
+            );
+          }
+          case 'examplesAside': {
+            const aside = entry as unknown as ExamplesAsideEntry;
+            return (
+              <ExamplesAside
+                title={aside.fields.title}
+                side={aside.fields.side ?? 'right'}
+                examples={aside.fields.examples}
               />
             );
           }

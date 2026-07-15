@@ -13,6 +13,7 @@ export async function POST(request: NextRequest) {
 
     const BEEHIIV_API_KEY = process.env.BEEHIIV_API_KEY;
     const BEEHIIV_PUBLICATION_ID = process.env.BEEHIIV_PUBLICATION_ID;
+    const BEEHIIV_API_URL = process.env.BEEHIIV_API_URL || 'https://api.beehiiv.com';
 
     if (!BEEHIIV_API_KEY || !BEEHIIV_PUBLICATION_ID) {
       return NextResponse.json(
@@ -22,7 +23,7 @@ export async function POST(request: NextRequest) {
     }
 
     const response = await fetch(
-      `https://api.beehiiv.com/v2/publications/${BEEHIIV_PUBLICATION_ID}/subscriptions`,
+      `${BEEHIIV_API_URL}/v2/publications/${BEEHIIV_PUBLICATION_ID}/subscriptions`,
       {
         method: 'POST',
         headers: {

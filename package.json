@@ -20,6 +20,8 @@
     "react-dom": "^18"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.12.1",
+    "@playwright/test": "^1.61.1",
     "@types/node": "^20",
     "@types/prismjs": "^1.26.5",
     "@types/react": "^18",

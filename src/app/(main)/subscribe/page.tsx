@@ -33,7 +33,7 @@ export default function SubscribePage() {
           <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mx-auto mb-3">
             <Sparkles className="text-purple-600" size={24} />
           </div>
-          <h3 className="font-semibold text-gray-900 mb-1">New Posts</h3>
+          <h2 className="font-semibold text-gray-900 mb-1">New Posts</h2>
           <p className="text-sm text-gray-600">
             Be the first to read new articles and stories.
           </p>
@@ -43,7 +43,7 @@ export default function SubscribePage() {
           <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-3">
             <Bell className="text-green-600" size={24} />
           </div>
-          <h3 className="font-semibold text-gray-900 mb-1">Art Updates</h3>
+          <h2 className="font-semibold text-gray-900 mb-1">Art Updates</h2>
           <p className="text-sm text-gray-600">
             Get notified when new artwork is added to the gallery.
           </p>
@@ -53,7 +53,7 @@ export default function SubscribePage() {
           <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mx-auto mb-3">
             <Gift className="text-orange-600" size={24} />
           </div>
-          <h3 className="font-semibold text-gray-900 mb-1">Exclusive Content</h3>
+          <h2 className="font-semibold text-gray-900 mb-1">Exclusive Content</h2>
           <p className="text-sm text-gray-600">
             Occasional subscriber-only updates and insights.
           </p>

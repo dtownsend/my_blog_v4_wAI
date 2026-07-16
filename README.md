@@ -1,3 +1,6 @@
+![Playwright Tests](https://github.com/dtownsend/my_blog_v4_wAI/actions/workflows/playwright.yml/badge.svg)
+
+
 # David's Personal Blog
 
 A personal blog platform built with Next.js 14, TypeScript, Tailwind CSS, and Contentful CMS.

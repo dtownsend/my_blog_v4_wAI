@@ -1,4 +1,4 @@
-[![Playwright Tests](https://github.com/dtownsend/my_blog_v4_wAI/actions/workflows/playwright.yml/badge.svg)](https://github.com/dtownsend/my_blog_v4_wAI/actions/workflows/playwright.yml)
+[![Playwright Tests](https://github.com/dtownsend/insidedtsbrain-blog/actions/workflows/playwright.yml/badge.svg)](https://github.com/dtownsend/insidedtsbrain-blog/actions/workflows/playwright.yml)
 
 # David's Personal Blog
 
@@ -50,8 +50,8 @@ production. CI runs the whole suite on every push/PR — no secrets required.
 ### 1. Clone and Install
 
 ```bash
-git clone https://github.com/dtownsend/my_blog_v4_wAI.git
-cd my_blog_v4_wAI
+git clone https://github.com/dtownsend/insidedtsbrain-blog.git
+cd insidedtsbrain-blog
 npm install
 ```
 

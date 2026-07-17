@@ -2,7 +2,9 @@ export const SITE_CONFIG = {
   name: 'Inside DTs Brain',
   title: 'Inside DTs Brain - Thoughts, Stories, and Art',
   description: 'A personal blog sharing thoughts, stories, ideas, projects, and artwork.',
-  url: process.env.NEXT_PUBLIC_SITE_URL || 'https://insidedtsbrain.com/',
+  // Canonical host is www (the apex 307-redirects to it). Strip any trailing
+  // slash so `${url}/blog/...` can't produce a double slash.
+  url: (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.insidedtsbrain.com').replace(/\/+$/, ''),
   author: 'David',
   social: {
     twitter: '', // TODO: add when available

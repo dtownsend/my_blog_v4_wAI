@@ -113,21 +113,21 @@ export default async function PostPage({ params }: PostPageProps) {
 
       {/* Featured Image */}
       {imageUrl && (
-        <div className="relative aspect-[16/9] mb-8 overflow-hidden rounded-xl bg-gray-100">
+        <div className="relative aspect-[16/9] mb-8 overflow-hidden rounded-xl">
           <Image
             src={imageUrl}
             alt={title}
             fill
             priority
             sizes="(max-width: 768px) 100vw, 768px"
-            className="object-cover"
+            className="object-contain"
           />
         </div>
       )}
 
       {/* Content */}
       <div className="prose prose-lg max-w-none">
-        <RichTextRenderer content={body} />
+        <RichTextRenderer content={body} linkButtons />
       </div>
 
       {/* Footer */}

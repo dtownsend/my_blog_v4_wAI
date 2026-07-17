@@ -25,6 +25,9 @@ import 'prismjs/components/prism-markdown';
 
 interface RichTextRendererProps {
   content: Document;
+  // When true, a paragraph containing only a link renders as a centered button.
+  // Enabled for blog posts, not the About page.
+  linkButtons?: boolean;
 }
 
 type DocNode = Document['content'][number];
@@ -63,7 +66,48 @@ function ExamplesAsidePair({
   );
 }
 
-export default function RichTextRenderer({ content }: RichTextRendererProps) {
+// A paragraph whose only meaningful content is a single hyperlink — i.e. a link
+// sitting alone on its own line. Returns the link's url and text, else null.
+function standaloneLinkNode(node: DocNode): { uri: string; text: string } | null {
+  if (node.nodeType !== BLOCKS.PARAGRAPH) return null;
+  const content = (node as unknown as {
+    content: Array<{
+      nodeType: string;
+      value?: string;
+      data?: { uri?: string };
+      content?: Array<{ value?: string }>;
+    }>;
+  }).content;
+  const meaningful = content.filter(
+    (c) => !(c.nodeType === 'text' && (c.value ?? '').trim() === '')
+  );
+  if (meaningful.length !== 1 || meaningful[0].nodeType !== INLINES.HYPERLINK) return null;
+  const link = meaningful[0];
+  const uri = link.data?.uri ?? '';
+  const text = (link.content ?? []).map((c) => c.value ?? '').join('');
+  return uri ? { uri, text } : null;
+}
+
+// A link rendered as a centered button, matching the site's button style.
+function LinkButton({ uri, label }: { uri: string; label: string }) {
+  const className =
+    'inline-flex items-center justify-center gap-2 px-6 py-3 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 transition-colors';
+  return (
+    <div className="text-center my-6">
+      {uri.startsWith('http') ? (
+        <a href={uri} target="_blank" rel="noopener noreferrer" className={className}>
+          {label}
+        </a>
+      ) : (
+        <Link href={uri} className={className}>
+          {label}
+        </Link>
+      )}
+    </div>
+  );
+}
+
+export default function RichTextRenderer({ content, linkButtons = false }: RichTextRendererProps) {
   useEffect(() => {
     Prism.highlightAll();
   }, [content]);
@@ -231,11 +275,19 @@ export default function RichTextRenderer({ content }: RichTextRendererProps) {
         />
       );
       i++; // skip the aside — it was consumed by the pair
-    } else {
-      rendered.push(
-        <Fragment key={i}>{documentToReactComponents(asDoc(node), options)}</Fragment>
-      );
+      continue;
     }
+
+    // A link alone on its own line renders as a centered button.
+    const link = linkButtons ? standaloneLinkNode(node) : null;
+    if (link) {
+      rendered.push(<LinkButton key={i} uri={link.uri} label={link.text} />);
+      continue;
+    }
+
+    rendered.push(
+      <Fragment key={i}>{documentToReactComponents(asDoc(node), options)}</Fragment>
+    );
   }
 
   return <div className="prose prose-lg max-w-none">{rendered}</div>;

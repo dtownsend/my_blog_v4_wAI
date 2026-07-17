@@ -23,13 +23,13 @@ export default function PostCard({ post, imagePosition = 'left' }: PostCardProps
         <div className={`flex flex-col md:flex-row gap-6 ${imagePosition === 'right' ? 'md:flex-row-reverse' : ''}`}>
           {/* Image */}
           {imageUrl && (
-            <div className="relative aspect-[16/9] md:aspect-[4/3] md:w-1/3 flex-shrink-0 overflow-hidden rounded-lg bg-gray-100">
+            <div className="relative aspect-[16/9] md:aspect-[4/3] md:w-1/3 flex-shrink-0 overflow-hidden rounded-lg">
               <Image
                 src={imageUrl}
                 alt={title}
                 fill
                 sizes="(max-width: 768px) 100vw, 33vw"
-                className="object-cover transition-transform duration-300 group-hover:scale-105"
+                className="object-contain transition-transform duration-300 group-hover:scale-105"
               />
             </div>
           )}

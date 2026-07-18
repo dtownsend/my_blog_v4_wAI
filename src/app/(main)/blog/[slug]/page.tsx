@@ -34,12 +34,18 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
       ? `https:${post.fields.featuredImage.fields.file.url}`
       : undefined;
 
+    // Relative path — Next resolves it against metadataBase (SITE_CONFIG.url),
+    // i.e. the canonical www host.
+    const canonicalPath = `/blog/${slug}`;
+
     return {
       title: post.fields.title,
       description: post.fields.excerpt,
+      alternates: { canonical: canonicalPath },
       openGraph: {
         title: post.fields.title,
         description: post.fields.excerpt,
+        url: canonicalPath,
         type: 'article',
         publishedTime: post.fields.publishDate,
         authors: [SITE_CONFIG.author],
